@@ -43,7 +43,7 @@ const Tasks = () => {
         </Link>
       </div>
 
-      {/* Task List */}
+     
       <ul className="space-y-3">
         {tasks.length > 0 ? (
           tasks.map((task) => (
