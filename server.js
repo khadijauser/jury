@@ -1,5 +1,5 @@
-require("dotenv").config(); // Load environment variables
-console.log("MONGO_URI:", process.env.MONGO_URI); // Debug log
+require("dotenv").config();
+console.log("MONGO_URI:", process.env.MONGO_URI);
 
 const express = require("express");
 const cors = require("cors");
@@ -12,10 +12,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
+
 connectDB();
 
 // Routes
+
 app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/resources", resourceRoutes);

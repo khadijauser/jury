@@ -1,28 +1,40 @@
-// backend/controllers/resourceController.js
 const Resource = require("../models/Resource");
 
-// Create a new resource
+
 exports.createResource = async (req, res) => {
   try {
-    const resource = new Resource(req.body);
+    const { taskId } = req.params;  
+    const resource = new Resource({
+      ...req.body,
+      task: taskId,  
+    });
+
     await resource.save();
+
+  
     res.status(201).json(resource);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
-// Get all resources
-exports.getResources = async (req, res) => {
+
+exports.getResourcesByTaskId = async (req, res) => {
   try {
-    const resources = await Resource.find();
+    const { taskId } = req.params;  
+    const resources = await Resource.find({ task: taskId });  
+
+    if (!resources || resources.length === 0) {
+      return res.status(404).json({ message: "No resources found for this task" });
+    }
+
     res.status(200).json(resources);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// Get a specific resource by ID
+
 exports.getResourceById = async (req, res) => {
   try {
     const resource = await Resource.findById(req.params.id);
@@ -35,7 +47,7 @@ exports.getResourceById = async (req, res) => {
   }
 };
 
-// Update a resource
+
 exports.updateResource = async (req, res) => {
   try {
     const resource = await Resource.findByIdAndUpdate(req.params.id, req.body, {
@@ -50,7 +62,7 @@ exports.updateResource = async (req, res) => {
   }
 };
 
-// Delete a resource
+
 exports.deleteResource = async (req, res) => {
   try {
     const resource = await Resource.findByIdAndDelete(req.params.id);
